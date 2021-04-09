@@ -1,7 +1,6 @@
 import PouchDB from './libs/PouchDB';
 import generateReplicationId from './libs/generateReplicationId';
 import checkInternet from './libs/checkInternet';
-const moment = require('moment');
 
 console.e = console.log;
 
@@ -100,11 +99,16 @@ export default class PouchyStore {
     if (this.isUseRemote) {
       // sync data local-remote
       try {
+        console.log('masuk 1')
         await checkInternet(this.urlRemote);
+        console.log('masuk 2')
+
         await this.dbLocal.replicate.from(this.dbRemote, {
           batch_size: 1000,
           batches_limit: 2,
         });
+        console.log('masuk 3')
+
       } catch (err) {
         // console.log(err);
       }

@@ -45,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
         rightImgIcon={Icons.sync}
         onRightPress={async () => {
           try {
-            await AppStore.todos.upload();
+            await AppStore.todos.uploadIfOnline();
           } catch (error) {
             console.log(error);
           }
