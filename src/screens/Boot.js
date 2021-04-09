@@ -3,13 +3,21 @@ import { View } from 'react-native';
 import { utils, ScaledText, ImgIcon, Gap } from 'urip-rn-kit';
 import Icons from '../assets/icons';
 import NavigationUtil from '../utils/NavigationUtil';
+import AppStore from '../store/index';
 
 const BootScreen = ({ navigation }) => {
   React.useEffect(() => {
-    setTimeout(() => {
-      NavigationUtil.reset('Home', navigation)
-    }, 1000)
-  }, [])
+    initializeDB().then(() => {
+      setTimeout(() => {
+        NavigationUtil.reset('Home', navigation)
+      }, 1000)
+    })
+  }, []);
+
+  const initializeDB = async () => {
+    await AppStore.init();
+  }
+
   return <View
     style={{
       backgroundColor: '#FFFFFF',

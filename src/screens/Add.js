@@ -3,6 +3,7 @@ import { SafeAreaView, View } from 'react-native'
 import { Button, Col, Gap, ImgIcon, Input, Padder, Row, ScaledText, utils } from 'urip-rn-kit'
 import Icons from '../assets/icons/index';
 import Header from '../components/Header';
+import AppStore from '../store';
 
 const AddScreen = ({ navigation }) => {
   const [content, setContent] = React.useState('');
@@ -24,7 +25,13 @@ const AddScreen = ({ navigation }) => {
   const onAdd = async () => {
     const text = content;
     const tags = getTags();
-    console.log({ text, tags });
+    await AppStore.todos.addItem({
+      text, 
+      tags, 
+      createdAt: new Date(), 
+      updatedAt: new Date()
+    });
+    AppStore.todos.uploadIfOnline();
     onReset();
     onBack();
   }

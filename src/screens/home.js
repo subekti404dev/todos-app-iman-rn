@@ -1,122 +1,63 @@
 import React from 'react'
+import _ from 'lodash'
 import { FlatList, SafeAreaView } from 'react-native'
-import { Gap } from 'urip-rn-kit'
+import { Gap, Padder, ScaledText } from 'urip-rn-kit'
 import TaskModal from '../components/TaskModal';
 import Icons from '../assets/icons/index';
 import FloatingAdd from '../components/FloatingAdd';
 import Header from '../components/Header';
 import Task from '../components/Task';
+import AppStore from '../store/index';
 
 const HomeScreen = ({ navigation }) => {
-  const data = [
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-      done: true
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123 tes 123 tes 123 tes 123 tes 123 tes 123 tes 123 tes 123 tes 123 tes 123 tes 123 tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    },
-    {
-      text: 'tes 123',
-      tags: [
-        'tes',
-        'reaxt',
-        'nodejs'
-      ],
-      createdAt: new Date(),
-    }
-  ];
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [selectedTask, setSelectedTask] = React.useState(null);
-  const [doneList, setDoneList] = React.useState([]);
-  const [undoneList, setUndoneList] = React.useState([]);
+  const [list, setList] = React.useState([]);
+  const [unuploadeds, setUnuploadeds] = React.useState(0);
+
+  let unsubTodos;
 
   React.useEffect(() => {
     updateData();
+    unsubTodos = AppStore.todos.subscribe(() => {
+      updateData();
+      return () => {
+        unsubTodos();
+      }
+    });
   }, [])
 
   const updateData = async () => {
-    setDoneList(data.filter(x => x.done));
-    setUndoneList(data.filter(x => !x.done));
+    const data = _.get(AppStore, 'todos.data', []);
+    setUnuploadeds(AppStore.todos.countUnuploadeds());
+
+    const dones = _.sortBy(data.filter(x => x.done), 'createdAt').reverse()
+    const undones = _.sortBy(data.filter(x => !x.done), 'createdAt').reverse()
+    console.log({ dones, undones });
+    setList([...undones, ...dones]);
   }
+
   return (
     <SafeAreaView style={{ backgroundColor: '#F3F3F3', height: '100%' }}>
       <Header
         title="My Todo"
         rightImgIcon={Icons.sync}
-        onRightPress={() => { }}
+        onRightPress={async () => {
+          try {
+            await AppStore.todos.upload();
+          } catch (error) {
+            console.log(error);
+          }
+        }}
       />
       <Gap vertical />
-
+      {unuploadeds > 0 &&
+        <Padder horizontal bottom>
+          <ScaledText color={'#3D3D3D'} italic>{`${unuploadeds} unuploaded changes`}</ScaledText>
+        </Padder>}
       <FlatList
-        data={undoneList.concat(doneList)}
+        data={list}
         keyExtractor={(v, i) => `item_${i}`}
         renderItem={({ item, index }) => {
           return (
@@ -133,8 +74,8 @@ const HomeScreen = ({ navigation }) => {
       <TaskModal
         isVisible={modalVisible}
         onClose={() => {
-          setModalVisible(false)
-          setSelectedTask(null)
+          setModalVisible(false);
+          setSelectedTask(null);
         }}
         data={selectedTask}
       />
