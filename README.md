@@ -1,7 +1,7 @@
 # Todos App React Native by Iman
 
 ## Screenshot
-![Todos App](https://imgur.com/download/qjEVQHD/My+Todo)
+![Todos App](https://i.imgur.com/M8XEc4t.png)
 
 ## How to Install
 ```bash
