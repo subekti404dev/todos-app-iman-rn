@@ -7023,10 +7023,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-urip-rn-kit@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/urip-rn-kit/-/urip-rn-kit-1.0.3.tgz#fa85c83d1feebfc52090c4881b7ad179c880ad74"
-  integrity sha512-Yi4FWJSiyjvOtaUaox1TQ1Is1RRHfha65CueAPw9pvF87y/DglYnAfvnlamYHdOX/LYWLi5043y76W08o0npAw==
+urip-rn-kit@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/urip-rn-kit/-/urip-rn-kit-1.0.6.tgz#1af24c8a74ce14e085b7edb18e1ff41914b8a66e"
+  integrity sha512-hVjKp5gF2l95B+Qi++oupirNKBXs+JXDRrodNjC3JEuGybL6io5yQyZtiR1HBoUaeFP6X6rHrcqiV5vZHbkGqA==
   dependencies:
     copyfiles "^2.4.1"
     lodash "^4.17.21"

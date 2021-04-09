@@ -1,9 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
 import Modal from 'react-native-modal';
-import { Box, Button, Col, Gap, Row, ScaledText, utils } from 'urip-rn-kit';
+import { Button, Gap, Padder, ScaledText, utils } from 'urip-rn-kit';
 
 const TaskModal = ({ isVisible, onClose, data }) => {
+
+  const onUndone = async () => {
+    onClose();
+  }
+
   const onDone = async () => {
     onClose();
   }
@@ -24,7 +29,9 @@ const TaskModal = ({ isVisible, onClose, data }) => {
           padding: utils.sizeMatters.scale(10),
           borderRadius: utils.sizeMatters.scale(5)
         }}>
-        <ScaledText>{data?.text}</ScaledText>
+        <Padder horizontal={5} vertical={3}>
+          <ScaledText>{data?.text}</ScaledText>
+        </Padder>
         <Gap vertical />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button
@@ -35,10 +42,10 @@ const TaskModal = ({ isVisible, onClose, data }) => {
           />
           <Gap />
           <Button
-            onPress={onDone}
-            label="Done"
+            onPress={data?.done ? onUndone : onDone}
+            label={data?.done ? "Undone" : "Done"}
             width={157}
-            color={'#8CD77A'}
+            color={data?.done ? "grey" : '#8CD77A'}
           />
         </View>
       </View>

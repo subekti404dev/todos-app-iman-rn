@@ -7,7 +7,7 @@ import Icons from '../assets/icons/index';
 
 const Header = ({ rightImgIcon, leftImgIcon, onRightPress, onLeftPress, title }) => {
   return (
-    <Row height={50}>
+    <Row height={45}>
       <Gap />
       <Col justifyCenter alignStart onPress={onLeftPress}>
         {leftImgIcon && <ImgIcon source={leftImgIcon} tintColor={'grey'} />}
