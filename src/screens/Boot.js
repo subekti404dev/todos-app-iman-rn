@@ -1,12 +1,13 @@
 import React from 'react'
-import { SafeAreaView, View } from 'react-native';
+import { View } from 'react-native';
 import { utils, ScaledText, ImgIcon, Gap } from 'urip-rn-kit';
 import Icons from '../assets/icons';
+import NavigationUtil from '../utils/NavigationUtil';
 
 const BootScreen = ({ navigation }) => {
   React.useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Home');
+      NavigationUtil.reset('Home', navigation)
     }, 1000)
   }, [])
   return <View
